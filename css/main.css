@@ -47,6 +47,6 @@ table {
 	color: white
 }
 
-td:nth-child(1) {
+td:not(:last-child) {
 	padding: 0 75px 0 0;	
 }

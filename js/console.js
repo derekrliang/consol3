@@ -39,15 +39,42 @@ commands["cd"] = function (args) {
 	window.location.href = args[0];
 };
 
+
+function tablify (row) {
+	var row_string = "<tr>";
+	for (var i = 0; i < row.length; i++) {
+		row_string += "<td>";
+		row_string += row[i];
+		row_string += "</td>";
+	}
+	row_string += "</tr>";
+	
+	return row_string;
+}
+
 commands["date"] = function (args) {
 	 printHtml((new Date()).toLocaleString());
 };
 
+	var dirPrint = "<table>";
+	dirPrint +=	tablify(["NAME", "SIZE", "DATE MODIFIIED"]);
+	dirPrint +=	tablify(["[parent directory]", "", ""]);
+	dirPrint +=	tablify([".git/", "", "--"]);
+	dirPrint +=	tablify(["css/", "", "--"]);
+	dirPrint +=	tablify(["js/", "", "--"]);
+	dirPrint +=	tablify(["index.html", "755 B", "--"]);
+	dirPrint +=	tablify(["README.md", "0 B", "--"]);
+	dirPrint += "</table>";   
+	
+commands["dir"] = function (args) {
+	       printHtml(dirPrint);
+}
+
 var tabularCommandPrint = "<table>";
-tabularCommandPrint += "<tr><td>" + 	"ABOUT" 	+ "</td>" + "<td>" + "Displays about the console" + "</td></tr>";
-tabularCommandPrint += "<tr><td>" + 	"CLEAR" 	+ "</td>" + "<td>" + "Clears the console" + "</td></tr>";
-tabularCommandPrint += "<tr><td>" + 	"CD" 		+ "</td>" + "<td>" + "Changes directory to the target" + "</td></tr>";
-tabularCommandPrint += "<tr><td>" + 	"DATE" 		+ "</td>" + "<td>" + "Displays the current date on this machine" + "</td></tr>";
+tabularCommandPrint +=	tablify(["ABOUT", "Displays about the console"]);
+tabularCommandPrint +=	tablify(["CLEAR", "Clears the console"]);
+tabularCommandPrint +=	tablify(["CD", "Changes directory to the target"]);
+tabularCommandPrint +=	tablify(["DATE", "Displays the current date on this machine"]);
 tabularCommandPrint += "</table>";
 
 commands["help"] = function (args) {
