@@ -7,7 +7,6 @@ html, body {
 
 #container {
 	display: block;
-	background: black;
 	border: 1px solid red;
 	width: 100%;
 }

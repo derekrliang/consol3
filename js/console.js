@@ -39,6 +39,28 @@ commands["cd"] = function (args) {
 	window.location.href = args[0];
 };
 
+commands["bcolor"] = function (args) {
+	$('html').css({
+		'background' : args[0]	
+	});
+	$('body').css({
+		'background' : args[0]	
+	});
+};
+
+
+commands["fcolor"] = function (args) {
+	$('output').css({
+		'color' : args[0]	
+	});
+	$('.line').css({
+		'color' : args[0]	
+	});
+	$('table').css({
+		'color' : args[0]	
+	});
+};
+
 
 function tablify (row) {
 	var row_string = "<tr>";
@@ -73,8 +95,10 @@ commands["dir"] = function (args) {
 var tabularCommandPrint = "<table>";
 tabularCommandPrint +=	tablify(["ABOUT", "Displays about the console"]);
 tabularCommandPrint +=	tablify(["CLEAR", "Clears the console"]);
-tabularCommandPrint +=	tablify(["CD", "Changes directory to the target"]);
+tabularCommandPrint +=	tablify(["CD [dir]", "Changes directory to the target"]);
 tabularCommandPrint +=	tablify(["DATE", "Displays the current date on this machine"]);
+tabularCommandPrint +=	tablify(["BCOLOR [color]", "Changes the background color"]);
+tabularCommandPrint +=	tablify(["FCOLOR [color]", "Changes the font color"]);
 tabularCommandPrint += "</table>";
 
 commands["help"] = function (args) {
