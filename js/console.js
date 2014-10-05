@@ -1,13 +1,35 @@
- var input_ = $('#input');
+ var input_ = $('.input');
  var output_ = $('output');
- var inputText_ = $('#input input');
+ var inputText_ = $('.input input');
+ 
+ var container_clone = $('.container').clone();
+ var curr_focus_container = null;
 
  input_.keydown(processCommand);
 
- $(window).click(function(e) {
-     inputText_[0].focus();
+ $('body').click(function(e) {	 
+	 inputText_.focus();
  });
-
+ 
+ $('body').on('click', '.container', function(e) {
+	 e.stopPropagation();
+	 
+	 if (curr_focus_container != null) {
+		 curr_focus_container.css({
+		 	'border-color' : 'red'
+	 	});
+	 }
+	 
+		$(this).css({
+		 'border-color' : 'blue'
+	 	});
+		
+		curr_focus_container = $(this);
+	 	output_ = curr_focus_container.children('output');
+		
+		inputText_.focus();
+ });
+ 
  $('output').bind('DOMSubtreeModified', function(e) {
      setTimeout(function() {
          inputText_[0].scrollIntoView();
@@ -59,6 +81,11 @@ commands["fcolor"] = function (args) {
 	$('table').css({
 		'color' : args[0]	
 	});
+};
+
+commands["split"] = function (args) {
+	var insertAfterThis = $('.container').last();
+	insertAfterThis.after(container_clone.clone());
 };
 
 
@@ -118,8 +145,12 @@ commands["help"] = function (args) {
      } else if (e.keyCode == 13) { /* ENTER */
          var line = this.cloneNode(true);
          line.removeAttribute('id')
-         line.classList.add('line');
+		 line.classList = 'input';
+		 line.classList.add('line');
+
          var input = line.querySelector('input');
+ 
+//		 input.classList = 'input';
          input.autofocus = false;
          input.readOnly = true;
          output_.append(line);

@@ -5,21 +5,27 @@ html, body {
 	font-family: "Courier New", Courier, monospace
 }
 
-#container {
-	display: block;
+.container {
+	display: inline-block;
 	border: 1px solid red;
-	width: 100%;
+	max-width: 100%;
 }
 
 output {
 	color: white;
 }
 
-#input, .line {
+.input, .line {
 	color: white;
 	display: -webkit-box;
 	-webkit-box-orient: horizontal;
 	-webkit-box-align: stretch;
+}
+
+.fixed-bottom {
+	position: fixed;
+	left: 0;
+	bottom: 0px;	
 }
 
 .content {
