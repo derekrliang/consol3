@@ -25,7 +25,11 @@ output {
 .fixed-bottom {
 	position: fixed;
 	left: 0;
-	bottom: 0px;	
+	bottom: 0px;
+	z-index: 999;
+	background: black;
+	border: 1px solid white;
+	width: 100%;
 }
 
 .content {
