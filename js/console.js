@@ -1,10 +1,14 @@
  var input_ = $('.input');
  var output_ = $('output');
  var inputText_ = $('.input input');
- 
  var container_clone = $('.container').clone();
- var curr_focus_container = null;
+ var curr_focus_container = $('.container');
 
+	 
+		curr_focus_container.css({
+		 'border-color' : 'blue'
+	 	});
+		
  input_.keydown(processCommand);
 
  $('body').click(function(e) {	 
@@ -126,6 +130,7 @@ tabularCommandPrint +=	tablify(["CD [dir]", "Changes directory to the target"]);
 tabularCommandPrint +=	tablify(["DATE", "Displays the current date on this machine"]);
 tabularCommandPrint +=	tablify(["BCOLOR [color]", "Changes the background color"]);
 tabularCommandPrint +=	tablify(["FCOLOR [color]", "Changes the font color"]);
+tabularCommandPrint +=	tablify(["SPLIT", "Launches a new console container"]);
 tabularCommandPrint += "</table>";
 
 commands["help"] = function (args) {
@@ -143,17 +148,12 @@ commands["help"] = function (args) {
          e.preventDefault();
 
      } else if (e.keyCode == 13) { /* ENTER */
-         var line = this.cloneNode(true);
-         line.removeAttribute('id')
-		 line.classList = 'input';
-		 line.classList.add('line');
-
-         var input = line.querySelector('input');
- 
-//		 input.classList = 'input';
+         var divInput = $(this).clone();
+		 divInput.removeClass('fixed-bottom');
+		 var input = divInput.find('input')[0];
          input.autofocus = false;
          input.readOnly = true;
-         output_.append(line);
+         output_.append(divInput);
 
          if (inputText_.val() && inputText_.val().trim()) {
              var args = inputText_.val().split(' ').filter(function(val, i) {
