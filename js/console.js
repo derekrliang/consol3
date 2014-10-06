@@ -66,7 +66,15 @@
  		printHtml("consol3 inspired by " + '<a href=\"http://www.htmlfivewow.com/demos/terminal/terminal.html\">HTML5 Terminal</a>. Copyright (c) 2014 Derek Liang. All rights reserved.');
  	};
  	commands["clear"] = function(args) {
- 		clearConsole(inputText_);
+		if (args.length > 0) {
+			if (args[0] == "all") {
+				for (var i = 0; i <= containerIndex; ++i) {
+					commands["sel"]([i]);
+					clearConsole(inputText_);
+				}
+			}
+		}
+		clearConsole(inputText_);
  	};
  	commands["cd"] = function(args) {
  		window.location.href = args[0];
@@ -168,6 +176,9 @@
  	tabularCommandPrint += tablify(["BCOLOR [color]", "Changes the background color"]);
  	tabularCommandPrint += tablify(["FCOLOR [color]", "Changes the font color"]);
  	tabularCommandPrint += tablify(["SPLIT", "Launches a new console container"]);
+	tabularCommandPrint += tablify(["GOTO", "Scrolls to the selected container, or given index."]);
+	tabularCommandPrint += tablify(["SEL", "Selects given console id."]);
+	tabularCommandPrint += tablify(["THIS", "Displays container information."]);
  	tabularCommandPrint += "</table>";
  	commands["help"] = function(args) {
  		printHtml(tabularCommandPrint);
