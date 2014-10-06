@@ -33,11 +33,15 @@
 	}
 	
  	$('body').on('click', '.container', selectContainer);
+	
+	/*
  	$('output').bind('DOMSubtreeModified', function(e) {
  		setTimeout(function() {
  			inputText_[0].scrollIntoView();
  		}, 0);
  	});
+	*/
+	
  	/* Console Variables */
  	var containerIndex = 0;
  	var containerHistory = [];
@@ -45,6 +49,7 @@
  	/* Initialize the first container */
  	containerHistory[0] = new Array();
  	curr_focus_container.addClass('cont-selected');
+	curr_focus_container.children().first().append("<div>master-console[id=" + containerIndex + "]</div>");
 
  	function clearConsole(input) {
  		output_.html('');
@@ -53,9 +58,9 @@
  	}
 
  	function printHtml(html) {
- 		output_[0].insertAdjacentHTML('beforeEnd', html);
- 		inputText_[0].scrollIntoView();
+		output_.append(html);
  	}
+	
  	var commands = [];
  	commands["about"] = function(args) {
  		printHtml("consol3 inspired by " + '<a href=\"http://www.htmlfivewow.com/demos/terminal/terminal.html\">HTML5 Terminal</a>. Copyright (c) 2014 Derek Liang. All rights reserved.');
@@ -94,8 +99,15 @@
 		}
 		
 		for (var i = 0; i < split_num; ++i) {
-			insertAfterThis.after(container_clone.clone());
-			containerHistory[++containerIndex] = new Array();
+			// Clone the basic container
+			var newContainer = container_clone.clone();
+			
+			// Add an unique id div displaying it to the user.
+			++containerIndex
+			newContainer.children().first().append("<div>console[id=" + containerIndex + "]</div>");
+			insertAfterThis.after(newContainer);
+			containerHistory[containerIndex] = new Array();
+			insertAfterThis = newContainer;
 		}
  	};
 	
@@ -110,6 +122,16 @@
 	commands["sel"] = function(args) {
 		if (args.length > 0) {
 			selectContainer_($($('.container').get(args[0])));
+		}
+	};
+	
+	commands["this"] = function(args) {
+		var console_index = $('.cont-selected').index();
+		
+		if (console_index == 0) {
+			printHtml("<div>master-console[id=" + console_index + "]</div>");
+		} else {
+			printHtml("<div>console[id=" + console_index + "]</div>");
 		}
 	};
 
