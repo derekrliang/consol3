@@ -90,7 +90,8 @@
  	};
 	
  	commands["split"] = function(args) {		
- 		var insertAfterThis = $('.container').last();
+// 		var insertAfterThis = $('.container').last();
+ 		var insertAfterThis = $('.container').last()[0];
 		var split_num = 1;
 		
 		if (args.length > 0) {
@@ -98,6 +99,11 @@
 		}
 		
 		var startTime = new Date();
+		
+		/* Here lies the old, slow JQuery code. Left for reference.
+			Split time for 10000 consoles took: 1159ms 
+			Split time for 10000 consoles took: 1135ms
+
 		for (var i = 0; i < split_num; ++i) {
 			// Clone the basic container
 			var newContainer = container_clone.clone();
@@ -109,6 +115,28 @@
 			containerHistory[containerIndex] = new Array();
 			insertAfterThis = newContainer;
 		}
+		*/
+		
+		/* Native JavaScript
+			Split time for 10000 consoles took: 159ms 
+			Split time for 10000 consoles took: 164ms
+		*/
+		
+		for (var i = 0; i < split_num; ++i) {
+			++containerIndex
+			
+			// Cloning DOM elements is very expensive. Instead, we just use a template string of the DOM we want to create.
+			// insertAdjacentHTML (standardized in HTML 5 along with innerHTML) is way faster.
+			
+			insertAfterThis.insertAdjacentHTML('afterEnd',
+			 "<div class=\"container\"><output>console[id=" + containerIndex + "]</output></div>");
+			 
+			containerHistory[containerIndex] = new Array();
+			
+			// Get next sibling since we don't have a DOM Object.
+			insertAfterThis = insertAfterThis.nextSibling;
+		}
+		
 		var endTime = new Date();
 		console.log("Split time for " + split_num + " consoles took: " + (endTime - startTime) + "ms");
  	};
