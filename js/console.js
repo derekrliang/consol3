@@ -5,6 +5,7 @@
  	var inputText_ = $('.input input');
  	var container_clone = $('.container').clone();
  	var curr_focus_container = $('.container');
+	
  	/* DOM Event Binds */
  	input_.keydown(processCommand);
  	$('body').click(function(e) {
@@ -34,18 +35,11 @@
 	
  	$('body').on('click', '.container', selectContainer);
 	
-	/*
- 	$('output').bind('DOMSubtreeModified', function(e) {
- 		setTimeout(function() {
- 			inputText_[0].scrollIntoView();
- 		}, 0);
- 	});
-	*/
-	
  	/* Console Variables */
  	var containerIndex = 0;
  	var containerHistory = [];
  	var historyIndex = -1;
+	
  	/* Initialize the first container */
  	containerHistory[0] = new Array();
  	curr_focus_container.addClass('cont-selected');
@@ -62,9 +56,11 @@
  	}
 	
  	var commands = [];
+	
  	commands["about"] = function(args) {
  		printHtml("consol3 inspired by " + '<a href=\"http://www.htmlfivewow.com/demos/terminal/terminal.html\">HTML5 Terminal</a>. Copyright (c) 2014 Derek Liang. All rights reserved.');
  	};
+	
  	commands["clear"] = function(args) {
 		if (args.length > 0) {
 			if (args[0] == "all") {
@@ -76,29 +72,24 @@
 		}
 		clearConsole(inputText_);
  	};
+	
  	commands["cd"] = function(args) {
  		window.location.href = args[0];
  	};
+	
  	commands["bcolor"] = function(args) {
- 		$('html').css({
- 			'background': args[0]
- 		});
- 		$('body').css({
+ 		curr_focus_container.css({
  			'background': args[0]
  		});
  	};
+	
  	commands["fcolor"] = function(args) {
- 		$('output').css({
- 			'color': args[0]
- 		});
- 		$('.line').css({
- 			'color': args[0]
- 		});
- 		$('table').css({
+ 		curr_focus_container.css({
  			'color': args[0]
  		});
  	};
- 	commands["split"] = function(args) {
+	
+ 	commands["split"] = function(args) {		
  		var insertAfterThis = $('.container').last();
 		var split_num = 1;
 		
@@ -106,6 +97,7 @@
 			split_num =  args[0];
 		}
 		
+		var startTime = new Date();
 		for (var i = 0; i < split_num; ++i) {
 			// Clone the basic container
 			var newContainer = container_clone.clone();
@@ -117,13 +109,15 @@
 			containerHistory[containerIndex] = new Array();
 			insertAfterThis = newContainer;
 		}
+		var endTime = new Date();
+		console.log("Split time for " + split_num + " consoles took: " + (endTime - startTime) + "ms");
  	};
 	
 	commands["goto"] = function(args) {
 		// If any arguments, pass it through 'sel' to select that console before scrolling to it.
 		commands["sel"](args);
 		$('html, body').animate({
-			scrollTop: $('.cont-selected').first().offset().top
+			scrollTop: curr_focus_container.offset().top
 		}, 2000);
 	};
 	
@@ -134,7 +128,7 @@
 	};
 	
 	commands["this"] = function(args) {
-		var console_index = $('.cont-selected').index();
+		var console_index = curr_focus_container.index();
 		
 		if (console_index == 0) {
 			printHtml("<div>master-console[id=" + console_index + "]</div>");
@@ -193,7 +187,7 @@
  			e.preventDefault();
  		} else if(e.keyCode == 38) { /* UP ARROW */
  			/* Sets the input value, when incrementing history (reset on ENTER) */
- 			var current_container_index = $('.cont-selected').index()
+ 			var current_container_index = curr_focus_container.index()
  			var history = containerHistory[current_container_index];
  			if(history.length > 0) {
  				if(historyIndex != history.length) {
@@ -203,7 +197,7 @@
  			}
  		} else if(e.keyCode == 40) { /* DOWN ARROW */
  			/* Sets the input value, when decrementing history (reset on ENTER) */
- 			var current_container_index = $('.cont-selected').index()
+ 			var current_container_index = curr_focus_container.index()
  			var history = containerHistory[current_container_index];
  			if(history.length > 0) {
  				if(historyIndex > 0) {
@@ -212,12 +206,22 @@
  				}
  			}
  		} else if(e.keyCode == 13) { /* ENTER */
+		
+		 	/* Save the input text into the container's history list */
+ 			var current_container_index = curr_focus_container.index();
+ 			containerHistory[current_container_index].push(inputText_.val());
+			
+ 			/* Reset history index count */
+ 			historyIndex = 0;
+			
+			/* Clone input and plaace it into the console container */
  			var divInput = $(this).clone();
  			divInput.removeClass('fixed-bottom');
  			var input = divInput.find('input')[0];
  			input.autofocus = false;
  			input.readOnly = true;
  			output_.append(divInput);
+			
  			if(inputText_.val() && inputText_.val().trim()) {
  				var args = inputText_.val().split(' ').filter(function(val, i) {
  					return val;
@@ -225,18 +229,17 @@
  				var cmd = args[0].toLowerCase();
  				args = args.splice(1);
  			}
+			
+			/* Get command callback function */
  			var callback = commands[cmd];
- 			if(typeof callback == 'undefined') { // command does not exist
+ 			if (typeof callback == 'undefined') {
  				printHtml(cmd + ': command not found');
  			} else {
  				callback(args);
  			}
- 			/* Save the input text into the container's history list */
- 			var current_container_index = $('.cont-selected').index();
- 			containerHistory[current_container_index].push(inputText_.val());
- 			/* Reset history index count */
- 			historyIndex = 0;
- 			inputText_.val('');
+			
+			/* Clear input */
+			inputText_.val('');
  		}
  	}
  });

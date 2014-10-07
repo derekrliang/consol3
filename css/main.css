@@ -6,6 +6,7 @@ html, body {
 }
 
 .container {
+	color: white;
 	display: inline-block;
 	border: 1px solid red;
 	max-width: 100%;
@@ -21,18 +22,14 @@ html, body {
 	border: 1px solid blue;
 }
 
-output {
-	color: white;
-}
-
 .input, .line {
-	color: white;
 	display: -webkit-box;
 	-webkit-box-orient: horizontal;
 	-webkit-box-align: stretch;
 }
 
 .fixed-bottom {
+	color: white;	
 	position: fixed;
 	left: 0;
 	bottom: 0px;
@@ -63,7 +60,7 @@ output {
 }
 
 table {
-	color: white
+	color: inherit;	
 }
 
 td:not(:last-child) {
