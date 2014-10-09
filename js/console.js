@@ -89,8 +89,28 @@
  		});
  	};
 	
+	commands["width"] = function(args) {
+		if (args.length > 0) {
+			curr_focus_container.css({
+				'width': args[0]
+			});
+		} else {
+			printHtml("takes in one argument of size px");	
+		}
+ 	};
+	
+	commands["height"] = function(args) {
+		if (args.length > 0) {
+			curr_focus_container.css({
+				'height': args[0]
+			});
+		} else {
+			printHtml("takes in one argument of size px");	
+		}
+ 	};
+	
  	commands["split"] = function(args) {		
-// 		var insertAfterThis = $('.container').last();
+		// var insertAfterThis = $('.container').last();
  		var insertAfterThis = $('.container').last()[0];
 		var split_num = 1;
 		
