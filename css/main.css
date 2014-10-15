@@ -66,3 +66,25 @@ table {
 td:not(:last-child) {
 	padding: 0 75px 0 0;	
 }
+
+/* NOTIFICATION */
+div.flash-notif {
+	color: black;
+	position: fixed;
+	top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+	z-index: 1;
+	background: rgba(204,102,153,.7);
+	
+	opacity: 1;
+	transition: opacity .5s ease-in-out;
+   -moz-transition: opacity .5s ease-in-out;
+   -webkit-transition: opacity .5s ease-in-out;
+}
+
+div.flash-notif.hide {
+	opacity: 0;
+}

@@ -350,4 +350,19 @@
 			inputText_.val('');
  		}
  	}
+	
+	/* One time timer to clear the welcome message */
+	var allowScrollClear = false;
+	var timer = null;
+	var WAIT_TIME = 3000;
+	
+	var killWelcomeMsg = function () {
+		$('div.flash-notif').addClass("hide");
+	};
+	var startTimer = function () {
+		timer = setTimeout(killWelcomeMsg, WAIT_TIME);
+	};
+	
+	startTimer();
+
  });
