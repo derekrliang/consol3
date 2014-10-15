@@ -196,8 +196,9 @@
 
 			if (args[0] == "google+") {
 				thumbnails = false;
-				maxPages = args[1];
 			}
+			
+			maxPages = args[1];
 
 			var searchquery = "";
 			for (var i = startIndex; i < args.length; i++) {
