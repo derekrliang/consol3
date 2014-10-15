@@ -184,6 +184,44 @@
 			printHtml("<div>console[id=" + console_index + "]</div>");
 		}
 	};
+	
+	var imageSearch;
+	var page = 1;
+	commands["image"] = function(args) {
+		// Refer to: https://developers.google.com/image-search/v1/devguide
+		if (args.length > 2 && args[0] == "google") {
+			var searchquery;
+			for (var i = 1; i < args.length; i++) {
+				searchquery += args[i] + " ";
+			}
+			imageSearch = new google.search.ImageSearch();
+			imageSearch.setSearchCompleteCallback(this, function(e) {
+				console.log("google search complete!");
+
+				if (imageSearch.results && imageSearch.results.length > 0) {
+				  var results = imageSearch.results;
+				  console.log("results: " + results.length);
+				  for (var i = 0; i < results.length; i++) {
+					var result = results[i];
+					printHtml("<img src=\"" + result.tbUrl + "\" />");
+				  }
+				}
+				
+				if (page < 8) {
+					imageSearch.gotoPage(page);
+					page++;
+				} else {
+					page = 1;
+					imageSearch.clearResults();
+				}
+			}, null);
+			
+			imageSearch.setResultSetSize(google.search.Search.LARGE_RESULTSET);
+			imageSearch.execute(searchquery);
+		} else if (args.length > 0 && args[0]) {
+			printHtml("<img src=\"" + args[0] + "\" />");
+		}
+	};
 
  	function tablify(row) {
  		var row_string = "<tr>";
