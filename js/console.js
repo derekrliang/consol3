@@ -187,13 +187,25 @@
 	
 	var imageSearch;
 	var page = 1;
+	var thumbnails = true;
+	var maxPages = 1;
 	commands["image"] = function(args) {
 		// Refer to: https://developers.google.com/image-search/v1/devguide
-		if (args.length > 2 && args[0] == "google") {
-			var searchquery;
-			for (var i = 1; i < args.length; i++) {
+		if (args.length > 2 && (args[0] == "google" || args[0] == "google+")) {
+			var startIndex = 2;
+
+			if (args[0] == "google+") {
+				thumbnails = false;
+				maxPages = args[1];
+			}
+
+			var searchquery = "";
+			for (var i = startIndex; i < args.length; i++) {
 				searchquery += args[i] + " ";
 			}
+			
+			console.log("searchq: " + searchquery);
+			
 			imageSearch = new google.search.ImageSearch();
 			imageSearch.setSearchCompleteCallback(this, function(e) {
 				console.log("google search complete!");
@@ -203,15 +215,22 @@
 				  console.log("results: " + results.length);
 				  for (var i = 0; i < results.length; i++) {
 					var result = results[i];
-					printHtml("<img src=\"" + result.tbUrl + "\" />");
+					
+					if (thumbnails) {
+						printHtml("<img src=\"" + result.tbUrl + "\" />");
+					} else {
+						printHtml("<img src=\"" + result.url + "\" />");
+					}
 				  }
 				}
 				
-				if (page < 8) {
+				if (page < maxPages) {
 					imageSearch.gotoPage(page);
 					page++;
 				} else {
 					page = 1;
+					maxPages = 1;
+					thumbnails = true;
 					imageSearch.clearResults();
 				}
 			}, null);
@@ -259,6 +278,8 @@
 	tabularCommandPrint += tablify(["GOTO", "Scrolls to the selected container, or given index."]);
 	tabularCommandPrint += tablify(["SEL", "Selects given console id."]);
 	tabularCommandPrint += tablify(["THIS", "Displays container information."]);
+	tabularCommandPrint += tablify(["IMAGE google #{PAGES} searchQuery", "Displays a google image search for up pages * 8, with cap at 64 images."]);
+	tabularCommandPrint += tablify(["IMAGE url", "Displays the image."]);
  	tabularCommandPrint += "</table>";
  	commands["help"] = function(args) {
  		printHtml(tabularCommandPrint);
