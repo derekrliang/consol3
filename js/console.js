@@ -242,6 +242,18 @@
 			printHtml("<img src=\"" + args[0] + "\" />");
 		}
 	};
+	
+	commands["notif"] = function(args) {
+		if (args.length > 0) {
+			var notif_msg = "";
+			for (var i = 0; i < args.length; i++) {
+				notif_msg += args[i] + " ";
+			}
+			console.log(notif_msg);
+			$('div#flash-notif').text(notif_msg).removeClass("hide");
+			startTimer();
+		}
+	};
 
  	function tablify(row) {
  		var row_string = "<tr>";
@@ -281,6 +293,7 @@
 	tabularCommandPrint += tablify(["THIS", "Displays container information."]);
 	tabularCommandPrint += tablify(["IMAGE google #{PAGES} searchQuery", "Displays a google image search for up pages * 8, with cap at 64 images."]);
 	tabularCommandPrint += tablify(["IMAGE url", "Displays the image."]);
+	tabularCommandPrint += tablify(["NOTIF [msg]", "Shows a notification with the msg."]);
  	tabularCommandPrint += "</table>";
  	commands["help"] = function(args) {
  		printHtml(tabularCommandPrint);
@@ -357,11 +370,14 @@
 	var WAIT_TIME = 3000;
 	
 	var killWelcomeMsg = function () {
-		$('div.flash-notif').addClass("hide");
+		$('div#flash-notif').addClass("hide");
 	};
+	
 	var startTimer = function () {
 		timer = setTimeout(killWelcomeMsg, WAIT_TIME);
 	};
+	
+	$('div#flash-notif').text("Welcome to consol3! Please type HELP for commands.");
 	
 	startTimer();
 

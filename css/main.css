@@ -68,7 +68,7 @@ td:not(:last-child) {
 }
 
 /* NOTIFICATION */
-div.flash-notif {
+div#flash-notif {
 	color: black;
 	position: fixed;
 	top: 50%;
@@ -85,6 +85,6 @@ div.flash-notif {
    -webkit-transition: opacity .5s ease-in-out;
 }
 
-div.flash-notif.hide {
+div#flash-notif.hide {
 	opacity: 0;
 }
