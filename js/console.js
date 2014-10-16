@@ -326,6 +326,21 @@
  					inputText_.val(history[history.length - historyIndex - 1]);
  				}
  			}
+ 		} else if(e.keyCode == 37) { /* LEFT ARROW */
+			// Selects the console to the left (actually, the console id - 1).
+			var console_index = curr_focus_container.index();
+			if (console_index > 0) {
+				commands["sel"]([console_index - 1]);
+			}
+			
+ 		} else if(e.keyCode == 39) { /* RIGHT ARROW */
+			// Selects the console to the right (actually, the console id + 1).
+			var console_index = curr_focus_container.index();
+			
+			if (console_index < containerIndex) {
+				commands["sel"]([console_index + 1]);
+			}
+			
  		} else if(e.keyCode == 13) { /* ENTER */
 		
 		 	/* Save the input text into the container's history list */
