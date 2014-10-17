@@ -316,7 +316,7 @@
  					historyIndex++;
  				}
  			}
- 		} else if(e.keyCode == 40) { /* DOWN ARROW */
+ 		} else if(e.keyCode == -1) {
  			/* Sets the input value, when decrementing history (reset on ENTER) */
  			var current_container_index = curr_focus_container.index()
  			var history = containerHistory[current_container_index];
@@ -326,7 +326,7 @@
  					inputText_.val(history[history.length - historyIndex - 1]);
  				}
  			}
- 		} else if(e.keyCode == 100) { /* NUM PAD LEFT ARROW */
+ 		} else if(e.keyCode == -1) {
 			// Selects the console to the left (actually, the console id - 1).
 			var console_index = curr_focus_container.index();
 			if (console_index > 0) {
