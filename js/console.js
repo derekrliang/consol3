@@ -9,7 +9,6 @@ function map_initialize() {
 
     maps[map_index] = new google.maps.Map(document.getElementById('map-canvas-' + map_index), mapOptions);
 
-
     // Try HTML5 geolocation
     // Note: Only works if website is hosted on server! Does not work on locahost
     if(navigator.geolocation) {
@@ -366,6 +365,7 @@ $(document).ready(function() {
     tabularCommandPrint += tablify(["IMAGE google #{PAGES} searchQuery", "Displays a google image search for up pages * 8, with cap at 64 images."]);
     tabularCommandPrint += tablify(["IMAGE url", "Displays the image."]);
     tabularCommandPrint += tablify(["NOTIF [msg]", "Shows a notification with the msg."]);
+    tabularCommandPrint += tablify(["MAP", "Inserts a Google Map onto the console."]);
     tabularCommandPrint += "</table>";
     commands["help"] = function(args) {
         printHtml(tabularCommandPrint);
